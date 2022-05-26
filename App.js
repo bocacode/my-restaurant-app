@@ -1,7 +1,9 @@
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ActivityIndicator, ImageBackground, ScrollView,
-  Image  } from 'react-native';
+import {
+  SafeAreaView, View, ActivityIndicator, ImageBackground, ScrollView
+} from 'react-native';
+import RestaurantCard from './src/components/RestaurantCard';
 import styles from './src/styles';
 
 const bgImage = { uri: 'https://png.pngtree.com/background/20210709/original/pngtree-food-western-food-steak-tomato-picture-image_941801.jpg' };
@@ -19,20 +21,17 @@ export default function App() {
   return (
     <View style={styles.container}>
       <ImageBackground resizeMode='cover' source={bgImage} style={styles.container}>
-        <ScrollView>
-          {!allRestaurants
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            {!allRestaurants
               ? <ActivityIndicator size='large' color='orange' />
-              : 
-                allRestaurants.map(singleRest => (
-                  <Fragment key={singleRest.id}>
-                    <Text style={styles.restaurantsName}>
-                      {singleRest.name} / { singleRest.cuisine}
-                    </Text>
-                    <Image source={{ uri: singleRest.image }} style={{ width: '100%', height: 100 }} />
-                  </Fragment>
-                ))
-          }
-        </ScrollView>
+              :
+              allRestaurants.map(singleRest => (
+                <RestaurantCard key={singleRest.id} singleRest={singleRest} />
+              ))
+            }
+          </ScrollView>
+        </SafeAreaView>
         <StatusBar style="auto" />
       </ImageBackground>
     </View>
