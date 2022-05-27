@@ -5,14 +5,17 @@ import RestaurantCard from '../components/RestaurantCard';
 
 export default function Home({ navigation }) {
   const [allRestaurants, setAllRestaurants] = useState();
-  const { setCurrentRest } = useContext(SingleRestContext);
+  const { setCurrentRest, ratingsUpdated } = useContext(SingleRestContext);
 
   useEffect(() => {
     fetch('https://my-first-firestore-bc.web.app/restaurants/')
       .then(res => res.json())
-      .then(setAllRestaurants)
+      .then(data => {
+        const sortedRestaurantList = data.sort((a,b) => b.rating - a.rating)
+        setAllRestaurants(sortedRestaurantList)
+      })
       .catch(console.error)
-  }, [])
+  }, [ratingsUpdated])
 
   const handlePress = (singleRest) => {
     setCurrentRest(singleRest);
